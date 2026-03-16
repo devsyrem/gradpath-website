@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm install && npm run build",
     "test": "jest --config jest.config.js",
     "test:auth": "jest --config jest.config.js tests/auth/",
     "test:api": "jest --config jest.config.js tests/api/",
@@ -13,7 +15,8 @@
     "test:integration": "jest --config jest.config.js tests/integration/",
     "lint": "eslint backend/ --ext .js",
     "frontend:dev": "cd frontend && npm run dev",
-    "frontend:build": "cd frontend && npm run build"
+    "frontend:build": "cd frontend && npm run build",
+    "frontend:install": "cd frontend && npm install"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

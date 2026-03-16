@@ -4,6 +4,7 @@
  */
 
 const express = require('express');
+const path = require('path');
 const helmet = require('helmet');
 const cors = require('cors');
 const compression = require('compression');
@@ -101,6 +102,23 @@ app.use('/api/placements', placementRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/users', userRoutes);
+
+/*
+ * ── Frontend (production) ───────────────────────────────────────
+ * Serve the built React app. In development the Vite dev server
+ * proxies /api requests to this Express instance instead.
+ */
+
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist');
+app.use(express.static(frontendDist));
+
+// SPA fallback — any non-API route serves index.html
+app.get(/^\/(?!api).*/, (_req, res, next) => {
+  const indexPath = path.join(frontendDist, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) next(); // fall through to 404 handler if file missing
+  });
+});
 
 /*
  * ── Error Handling ──────────────────────────────────────────────
